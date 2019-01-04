@@ -4,6 +4,7 @@
 #include "vk/HelperTypes.h"
 
 #include <vector>
+#include <mutex>
 
 namespace of{
 namespace vk{

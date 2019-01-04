@@ -354,6 +354,24 @@
     <ClInclude Include="..\..\..\openFrameworks\vk\Context.h">
       <Filter>libs\openFrameworks\vk</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\openFrameworks\gl\ofGLBaseTypes.h">
+      <Filter>libs\openFrameworks\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openFrameworks\graphics\ofGraphicsBaseTypes.h">
+      <Filter>libs\openFrameworks\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openFrameworks\graphics\ofGraphicsConstants.h">
+      <Filter>libs\openFrameworks\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openFrameworks\math\ofMathConstants.h">
+      <Filter>libs\openFrameworks\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openFrameworks\sound\ofSoundBaseTypes.h">
+      <Filter>libs\openFrameworks\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\openFrameworks\video\ofVideoBaseTypes.h">
+      <Filter>libs\openFrameworks\video</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\openFrameworks\app\ofAppRunner.cpp">
@@ -595,6 +613,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\openFrameworks\vk\Context.cpp">
       <Filter>libs\openFrameworks\vk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openFrameworks\app\ofBaseApp.cpp">
+      <Filter>libs\openFrameworks\app</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openFrameworks\graphics\ofGraphicsBaseTypes.cpp">
+      <Filter>libs\openFrameworks\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\openFrameworks\sound\ofSoundBaseTypes.cpp">
+      <Filter>libs\openFrameworks\sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

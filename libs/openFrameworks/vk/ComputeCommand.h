@@ -5,6 +5,7 @@
 #include "vk/Pipeline.h"
 #include "vk/Texture.h"
 #include "vk/Context.h"
+#include <glm/glm.hpp>
 
 namespace of{
 namespace vk{

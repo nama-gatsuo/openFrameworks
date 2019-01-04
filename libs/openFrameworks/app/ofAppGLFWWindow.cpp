@@ -178,9 +178,9 @@ void ofAppGLFWWindow::setup(const ofGLFWWindowSettings & _settings){
 
 		// all vulkan setup happens here.
 		glfwWindowHint( GLFW_CLIENT_API, GLFW_NO_API );
-
-		windowP = glfwCreateWindow( settings.width,
-			settings.height,
+		
+		windowP = glfwCreateWindow( settings.getWidth(),
+			settings.getHeight(),
 			settings.title.c_str(),
 			NULL,
 			NULL );
@@ -201,8 +201,8 @@ void ofAppGLFWWindow::setup(const ofGLFWWindowSettings & _settings){
 		{
 			// create swapchain
 			of::vk::WsiSwapchainSettings swapchainSettings{};
-			swapchainSettings.width  = _settings.width;
-			swapchainSettings.height = _settings.height;
+			swapchainSettings.width  = _settings.getWidth();
+			swapchainSettings.height = _settings.getHeight();
 			swapchainSettings.numSwapchainImages = _settings.rendererSettings.numSwapchainImages;
 			swapchainSettings.presentMode        = _settings.rendererSettings.presentMode;
 			swapchainSettings.windowSurface = getVkSurface();
@@ -218,10 +218,12 @@ void ofAppGLFWWindow::setup(const ofGLFWWindowSettings & _settings){
 		glfwSetWindowUserPointer( windowP, this );
 
 		// write the window size back in our settings
-		glfwGetWindowSize( windowP, &settings.width, &settings.height );
+		int w = 0, h = 0;
+		glfwGetWindowSize( windowP, &w, &h );
+		settings.setSize(w, h);
 
-		currentW = settings.width;
-		currentH = settings.height;
+		currentW = settings.getWidth();
+		currentH = settings.getHeight();
 	}
 	else{
 		ofLog() << "Vulkan not supported.";

@@ -7,6 +7,7 @@
 #include "vk/ImageAllocator.h"
 #include <memory>
 #include <forward_list>
+#include <map>
 
 /*
 

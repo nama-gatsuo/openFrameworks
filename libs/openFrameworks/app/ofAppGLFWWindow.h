@@ -45,7 +45,6 @@ public:
 		: ofGLWindowSettings(settings){}
 #endif
 
-#ifndef OF_TARGET_API_VULKAN
 	int numSamples = 4;
 	bool doubleBuffering = true;
 	int redBits = 8;
@@ -55,14 +54,13 @@ public:
 	int depthBits = 24;
 	int stencilBits = 0;
 	bool stereo = false;
-	shared_ptr<ofAppBaseWindow> shareContextWith;
-#endif
-	bool multiMonitorFullScreen = false;
 	bool visible = true;
 	bool iconified = false;
 	bool decorated = true;
 	bool resizable = true;
 	int monitor = 0;
+	bool multiMonitorFullScreen = false;
+	std::shared_ptr<ofAppBaseWindow> shareContextWith;
 };
 
 #if defined(TARGET_OPENGLES)
@@ -172,6 +170,16 @@ public:
 	bool isWindowActive();
 	bool isWindowResizeable();
 	void iconify(bool bIconify);
+
+	// window settings, this functions can only be called from main before calling ofSetupOpenGL
+	// TODO: remove specialized version of ofSetupOpenGL when these go away
+	OF_DEPRECATED_MSG("use ofGLFWWindowSettings to create the window instead", void setNumSamples(int samples));
+	OF_DEPRECATED_MSG("use ofGLFWWindowSettings to create the window instead", void setDoubleBuffering(bool doubleBuff));
+	OF_DEPRECATED_MSG("use ofGLFWWindowSettings to create the window instead", void setColorBits(int r, int g, int b));
+	OF_DEPRECATED_MSG("use ofGLFWWindowSettings to create the window instead", void setAlphaBits(int a));
+	OF_DEPRECATED_MSG("use ofGLFWWindowSettings to create the window instead", void setDepthBits(int depth));
+	OF_DEPRECATED_MSG("use ofGLFWWindowSettings to create the window instead", void setStencilBits(int stencil));
+	OF_DEPRECATED_MSG("use ofGLFWWindowSettings to create the window instead", void setMultiDisplayFullscreen(bool bMultiFullscreen)); //note this just enables the mode, you have to toggle fullscreen to activate it.
 
 #if defined(TARGET_LINUX) && !defined(TARGET_RASPBERRY_PI)
 	Display* 	getX11Display();

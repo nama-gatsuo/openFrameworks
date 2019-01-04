@@ -1,5 +1,5 @@
 #include "ofAppVkNoWindow.h"
-#include "ofBaseApp.h"
+//#include "ofBaseApp.h"
 #include "ofVkRenderer.h"
 #include "ImgSwapchain.h"
 
@@ -72,8 +72,8 @@ ofAppVkNoWindow::ofAppVkNoWindow(){
 //----------------------------------------------------------
 
 void ofAppVkNoWindow::setup(const ofVkWindowSettings & settings){
-	width = settings.width;
-	height = settings.height;
+	width = settings.getWidth();
+	height = settings.getHeight();
 
 	// create renderer as vkRenderer
 	auto vkRenderer = make_shared<ofVkRenderer>( this, settings.rendererSettings );
@@ -83,8 +83,8 @@ void ofAppVkNoWindow::setup(const ofVkWindowSettings & settings){
 		// Create swapchain based on swapchain settings,
 		// and swapchainSettings type
 		of::vk::ImgSwapchainSettings swapchainSettings{};
-		swapchainSettings.width = settings.width;
-		swapchainSettings.height = settings.height;
+		swapchainSettings.width = settings.getWidth();
+		swapchainSettings.height = settings.getHeight();
 		swapchainSettings.numSwapchainImages = settings.rendererSettings.numSwapchainImages;
 		swapchainSettings.path = "render/img_";
 		swapchainSettings.renderer = vkRenderer;
