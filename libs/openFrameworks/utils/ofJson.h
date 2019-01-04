@@ -1,7 +1,6 @@
 #pragma once
 
 #include "json.hpp"
-#include "ofFileUtils.h"
 #include "ofParameter.h"
 
 // for convenience
@@ -64,7 +63,7 @@ inline bool ofSavePrettyJson(const std::filesystem::path& filename, const ofJson
     return true;
 }
 
-inline void ofSerialize(ofJson & js, ofAbstractParameter & parameter){
+inline void ofSerialize(ofJson & js, const ofAbstractParameter & parameter){
 	if(!parameter.isSerializable()){
 		return;
 	}

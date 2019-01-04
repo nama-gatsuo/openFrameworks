@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OF_MAIN_H
+#define OF_MAIN_H
 
 //--------------------------
 // utils
@@ -22,7 +23,7 @@
 
 //--------------------------
 // types
-#include "ofBaseTypes.h"
+#include "ofGraphicsBaseTypes.h"
 #include "ofTypes.h"
 #include "ofColor.h"
 #include "ofPoint.h"
@@ -53,10 +54,10 @@
 #include "ofTexture.h"
 #include "ofVbo.h"
 #include "ofVboMesh.h"
-#include "ofGLProgrammableRenderer.h"
-#ifndef TARGET_PROGRAMMABLE_GL
-	#include "ofGLRenderer.h"
-#endif
+// #include "ofGLProgrammableRenderer.h"
+// #ifndef TARGET_PROGRAMMABLE_GL
+// 	#include "ofGLRenderer.h"
+// #endif
 
 //--------------------------
 // graphics
@@ -113,3 +114,5 @@
 
 //--------------------------
 using namespace std;
+
+#endif

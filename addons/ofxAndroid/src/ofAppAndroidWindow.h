@@ -11,7 +11,6 @@
 #include "ofEvents.h"
 #include "ofConstants.h"
 #include "ofTypes.h"
-#include "ofBaseTypes.h"
 
 class ofAppAndroidWindow: public ofAppBaseGLESWindow {
 public:
@@ -63,6 +62,8 @@ public:
 
 	void	setThreadedEvents(bool threadedEvents);
 	void 	setAccumulateTouchEvents(bool accumEvents);
+
+	int 	getGlesVersion();
 
 private:
 	ofCoreEvents coreEvents;

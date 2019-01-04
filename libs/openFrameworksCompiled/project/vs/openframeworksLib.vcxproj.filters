@@ -93,9 +93,6 @@
     <ClInclude Include="..\..\..\openFrameworks\types\ofTypes.h">
       <Filter>libs\openFrameworks\types</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\openFrameworks\types\ofBaseTypes.h">
-      <Filter>libs\openFrameworks\types</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\openFrameworks\types\ofColor.h">
       <Filter>libs\openFrameworks\types</Filter>
     </ClInclude>
@@ -235,12 +232,6 @@
       <Filter>libs\openFrameworks\utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\openFrameworks\sound\ofRtAudioSoundStream.h">
-      <Filter>libs\openFrameworks\sound</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\openFrameworks\sound\ofBaseSoundPlayer.h">
-      <Filter>libs\openFrameworks\sound</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\openFrameworks\sound\ofBaseSoundStream.h">
       <Filter>libs\openFrameworks\sound</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\openFrameworks\sound\ofFmodSoundPlayer.h">
@@ -546,9 +537,6 @@
       <Filter>libs\openFrameworks\video</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\openFrameworks\sound\ofSoundBuffer.cpp">
-      <Filter>libs\openFrameworks\sound</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\openFrameworks\sound\ofBaseSoundStream.cpp">
       <Filter>libs\openFrameworks\sound</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\openFrameworks\app\ofMainLoop.cpp">

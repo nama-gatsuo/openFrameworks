@@ -10,7 +10,9 @@
 #include "ofLog.h"
 #include "ofBaseApp.h"
 #include "ofAppRunner.h"
+#include "ofURLFileLoader.h"
 #include <string>
+#include <cstdarg>
 
 class ofColorsLoggerChannel: public ofBaseLoggerChannel{
 	std::string CON_DEFAULT="\033[0m";
@@ -182,8 +184,8 @@ protected:
 		}else{
 			ofLogError() << testName << " failed " << msg;
 			ofLogError() << "test_eq(" << v1 << ", " << v2 << ")";
-			ofLogError() << "value1: " << v1 << " is " << t1;
-			ofLogError() << "value2: " << v2 << " is " << t2;
+			ofLogError() << "value1: " << v1 << " is " << ofToString(t1);
+			ofLogError() << "value2: " << v2 << " is " << ofToString(t2);
 			ofLogError() << file << ": " << line;
 			numTestsFailed++;
 			return false;
@@ -205,8 +207,8 @@ protected:
 		}else{
 			ofLogError() << testName << " failed " << msg;
 			ofLogError() << "test_gt(" << v1 << ", " << v2 << ")";
-			ofLogError() << "value1: " << v1 << " is " << t1;
-			ofLogError() << "value2: " << v2 << " is " << t2;
+			ofLogError() << "value1: " << v1 << " is " << ofToString(t1);
+			ofLogError() << "value2: " << v2 << " is " << ofToString(t2);
 			ofLogError() << file << ": " << line;
 			numTestsFailed++;
 			return false;
@@ -228,8 +230,8 @@ protected:
 		}else{
 			ofLogError() << testName << " failed " << msg;
 			ofLogError() << "test_lt(" << v1 << ", " << v2 << ")";
-			ofLogError() << "value1: " << v1 << " is " << t1;
-			ofLogError() << "value2: " << v2 << " is " << t2;
+			ofLogError() << "value1: " << v1 << " is " << ofToString(t1);
+			ofLogError() << "value2: " << v2 << " is " << ofToString(t2);
 			ofLogError() << file << ": " << line;
 			numTestsFailed++;
 			return false;
@@ -302,7 +304,7 @@ private:
     std::shared_ptr<ofColorsLoggerChannel> logger{new ofColorsLoggerChannel};
 };
 
-#define test(x, ...) this->do_test(x,__VA_ARGS__,__FILE__,__LINE__)
-#define test_eq(x,y, ...) this->do_test_eq(x,y,# x,# y,__VA_ARGS__,__FILE__,__LINE__)
-#define test_gt(x,y, ...) this->do_test_gt(x,y,# x,# y,__VA_ARGS__,__FILE__,__LINE__)
-#define test_lt(x,y, ...) this->do_test_lt(x,y,# x,# y,__VA_ARGS__,__FILE__,__LINE__)
+#define ofxTest(x, ...) this->do_test(x,__VA_ARGS__,__FILE__,__LINE__)
+#define ofxTestEq(x,y, ...) this->do_test_eq(x,y,# x,# y,__VA_ARGS__,__FILE__,__LINE__)
+#define ofxTestGt(x,y, ...) this->do_test_gt(x,y,# x,# y,__VA_ARGS__,__FILE__,__LINE__)
+#define ofxTestLt(x,y, ...) this->do_test_lt(x,y,# x,# y,__VA_ARGS__,__FILE__,__LINE__)

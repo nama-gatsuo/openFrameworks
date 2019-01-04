@@ -7,7 +7,7 @@ import qbs.Probes
 import "helpers.js" as Helpers
 
 Module{
-    name: "ofCore"
+    name: "of"
 
     property string ofRoot: {
         if(FileInfo.isAbsolutePath(project.of_root)){
@@ -63,6 +63,9 @@ Module{
         property stringList ldflags
         property stringList system_libs
         property stringList static_libs
+        property string platform: parent.platform;
+        property string ofRoot: parent.ofRoot;
+        property stringList pkgConfigs: parent.pkgConfigs
         configure: {
             includes = [];
             cflags = [];
@@ -213,7 +216,8 @@ Module{
                 ldflags = Helpers.pkgconfig(configs, ["--libs-only-L"]);
                 if(platform === "msys2"){
                     ldflags.push("-L"+FileInfo.joinPaths(Helpers.msys2root(),"mingw32/lib"));
-                    //ldflags.push("-fuse-ld=gold");
+                }else{
+                    ldflags.push("-fuse-ld=gold");
                 }
             }else{
                 ldflags = [];
@@ -238,7 +242,11 @@ Module{
 
     Probe {
         id: ADDITIONAL_LIBS
+        property bool useStdFs: project.useStdFs
         property stringList libs
+        property string platform: parent.platform
+        property string compilerName: cpp.compilerName
+        property int compilerVersionMajor: cpp.compilerVersionMajor
         configure: {
             if(platform === "linux"  || platform === "linux64"){
                 var libslist = [
@@ -262,14 +270,14 @@ Module{
                     libslist.push("rtaudio");
                 }
 
-//                if(cpp.compilerName=='gcc' && cpp.compilerVersionMajor>=6){
-//                    libslist.push('stdc++fs');
-//                }else{
-//                    libslist.push("boost_filesystem");
-//                    libslist.push("boost_system");
-//                }
-                libslist.push("boost_filesystem");
-                libslist.push("boost_system");
+                if(useStdFs && compilerName=='g++' && compilerVersionMajor>=6){
+                    libslist.push('stdc++fs');
+                }else{
+                    libslist.push("boost_filesystem");
+                    libslist.push("boost_system");
+                }
+//                libslist.push("boost_filesystem");
+//                libslist.push("boost_system");
 
                 libs = libslist;
             }else if(platform === "msys2"){
@@ -291,7 +299,7 @@ Module{
     }
 
     Probe{
-        condition: !isCoreLibrary
+        condition: !of.isCoreLibrary
         id: ADDONS
         property stringList includes
         property pathList sources
@@ -301,6 +309,11 @@ Module{
         property stringList cflags
         property stringList ldflags
         property stringList defines;
+        property bool isCoreLibrary: parent.isCoreLibrary
+        property stringList addons: parent.addons
+        property string sourceDirectory: parent.sourceDirectory
+        property string ofRoot: parent.ofRoot;
+        property string platform: parent.platform;
 
         configure: {
             includes = [];
@@ -325,8 +338,10 @@ Module{
                     var addonsmake = new TextFile(sourceDirectory + "/addons.make");
                     while(!addonsmake.atEof()){
                         var line = addonsmake.readLine().trim();
-                        allAddons.push(line);
-                        var addonPath = ofRoot + '/addons/' + line;
+                        if(line){
+                            allAddons.push(line);
+//                            var addonPath = ofRoot + '/addons/' + line;
+                        }
                     }
                 }catch(e){}
             }else{
@@ -544,6 +559,9 @@ Module{
     Probe{
         id: DEFINES_LINUX
         property stringList list
+        property bool useStdFs: project.useStdFs
+        property string compilerName: cpp.compilerName
+        property int compilerVersionMajor: cpp.compilerVersionMajor
         configure:{
             list = ['GCC_HAS_REGEX'];
             if(Helpers.pkgExists("gtk+-3.0")){
@@ -552,7 +570,7 @@ Module{
             if(Helpers.pkgExists("libmpg123")){
                 list.push("OF_USING_MPG123=1");
             }
-            if(cpp.compilerName=='gcc' && cpp.compilerVersionMajor>=6){
+            if(useStdFs && compilerName=='g++' && compilerVersionMajor>=6){
                 list.push('OF_USING_STD_FS=1');
             }
             found = true;
@@ -580,8 +598,8 @@ Module{
 
     //cpp.cxxLanguageVersion: "c++14"
 
-    coreWarningLevel: 'default'
-    coreCFlags: {
+    property string coreWarningLevel: 'default'
+    property stringList coreCFlags: {
         var flags = CORE.cflags
             .concat(['-Wno-unused-parameter','-Werror=return-type'])
             .concat(cFlags);
@@ -657,6 +675,8 @@ Module{
                 'IOKit',
                 'OpenGL',
                 'QuartzCore',
+                'Security',
+                'LDAP',
             ].concat(frameworks);
 
             if(of.isCoreLibrary){
@@ -734,7 +754,7 @@ Module{
     property stringList dynamicLibraries: []
     property stringList addons
 
-    coreIncludePaths: {
+    property stringList coreIncludePaths: {
         var flags = CORE.includes
             .concat(includePaths);
         if(of.isCoreLibrary){
@@ -744,7 +764,7 @@ Module{
         }
     }
 
-    coreStaticLibs: {
+    property stringList coreStaticLibs: {
         if(of.isCoreLibrary){
             return CORE.static_libs;
         }else{
@@ -752,7 +772,7 @@ Module{
         }
     }
 
-    coreSystemLibs: {
+    property stringList coreSystemLibs: {
         if(of.isCoreLibrary){
             return CORE.system_libs
                 .concat(ADDITIONAL_LIBS.libs);

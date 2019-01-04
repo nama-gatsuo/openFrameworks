@@ -10,8 +10,6 @@
 #include "GLFW/glfw3.h"
 
 #include "ofAppBaseWindow.h"
-#include "ofEvents.h"
-#include "ofPixels.h"
 #include "ofRectangle.h"
 
 #ifdef TARGET_LINUX
@@ -20,6 +18,11 @@ typedef struct _XIC * XIC;
 #endif
 
 class ofBaseApp;
+struct GLFWwindow;
+class ofCoreEvents;
+template<typename T>
+class ofPixels_;
+typedef ofPixels_<unsigned char> ofPixels;
 
 #ifdef TARGET_OPENGLES
 class ofGLFWWindowSettings: public ofGLESWindowSettings{
@@ -83,7 +86,7 @@ public:
 	static bool doesLoop(){ return false; }
 	static bool allowsMultiWindow(){ return true; }
 	static bool needsPolling(){ return true; }
-	static void pollEvents(){ glfwPollEvents(); }
+	static void pollEvents();
 
 
     // this functions are only meant to be called from inside OF don't call them from your code
@@ -91,7 +94,7 @@ public:
 #ifdef TARGET_OPENGLES
 	void setup(const ofGLESWindowSettings & settings);
 #elif defined(OF_TARGET_API_VULKAN)
-	
+
 	void setup( const ofVkWindowSettings & settings );
 
 	// Create a vkSurface using GLFW. The surface is owned by the current window.
@@ -103,7 +106,7 @@ public:
 	// Destroy a vkSurface
 	void destroyVkSurface();
 
-	// Return vkSurface used to render to this window 
+	// Return vkSurface used to render to this window
 	const VkSurfaceKHR&  getVkSurface();
 
 
@@ -116,8 +119,6 @@ public:
 	bool getWindowShouldClose();
 	void setWindowShouldClose();
 
-	void close();
-
 	void hideCursor();
 	void showCursor();
 
@@ -126,7 +127,7 @@ public:
 
 	ofCoreEvents & events();
 	std::shared_ptr<ofBaseRenderer> & renderer();
-    
+
     GLFWwindow* getGLFWWindow();
     void * getWindowContext(){return getGLFWWindow();}
 	ofGLFWWindowSettings getSettings(){ return settings; }
@@ -212,6 +213,8 @@ private:
 	static void 	drop_cb(GLFWwindow* windowP_, int numFiles, const char** dropString);
 	static void		error_cb(int errorCode, const char* errorDescription);
 
+	void close();
+
 #ifdef TARGET_LINUX
 	void setWindowIcon(const std::string & path);
 	void setWindowIcon(const ofPixels & iconPixels);
@@ -219,11 +222,11 @@ private:
 	XIC xic;
 #endif
 
-	ofCoreEvents coreEvents;
+	std::unique_ptr<ofCoreEvents> coreEvents;
 	std::shared_ptr<ofBaseRenderer> currentRenderer;
 	ofGLFWWindowSettings settings;
 
-	ofWindowMode	windowMode;
+	ofWindowMode	targetWindowMode;
 
 	bool			bEnableSetupScreen;
 	int				windowW, windowH;		/// Physical framebuffer pixels extents

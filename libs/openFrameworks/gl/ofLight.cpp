@@ -10,9 +10,11 @@
 
 #include "ofLight.h"
 #include "ofConstants.h"
-#include "ofLog.h"
-#include "ofUtils.h"
+#include "of3dUtils.h"
+#include "ofGLBaseTypes.h"
+#include "ofGLUtils.h"
 #include <map>
+#include <glm/gtc/quaternion.hpp>
 
 using namespace std;
 
@@ -352,14 +354,14 @@ void ofLight::onOrientationChanged() {
 	if(data->glIndex==-1) return;
 	if(getIsDirectional()) {
 		// if we are a directional light and not positional, update light position (direction)
-		auto lookAtDir = glm::normalize(getGlobalOrientation() * glm::vec4(0,0,-1, 1)).xyz();
+		glm::vec3 lookAtDir(glm::normalize(getGlobalOrientation() * glm::vec4(0,0,-1, 1)));
 		data->position = {lookAtDir.x,lookAtDir.y,lookAtDir.z,0.f};
 		if ( auto r = data->rendererP.lock() ){
 			r->setLightPosition( data->glIndex, data->position );
 		}
 	}else if(getIsSpotlight() || getIsAreaLight()) {
 		// determines the axis of the cone light
-		auto lookAtDir = glm::normalize(getGlobalOrientation() * glm::vec4(0,0,-1, 1)).xyz();
+		glm::vec3 lookAtDir(glm::normalize(getGlobalOrientation() * glm::vec4(0,0,-1, 1)));
 		data->direction = lookAtDir;
 		if ( auto r = data->rendererP.lock() ){
 			r->setLightSpotDirection( data->glIndex, glm::vec4( data->direction, 0.0f ) );

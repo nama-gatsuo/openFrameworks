@@ -17,6 +17,7 @@ CppApplication{
     Probe{
         id: include
         property stringList paths
+        property string sourceDirectory: project.sourceDirectory
         configure: {
             paths = Helpers.listDirsRecursive(sourceDirectory + '/src');
             found = true;
@@ -47,12 +48,14 @@ CppApplication{
 
     Properties{
         condition: of.platform === "osx"
-        cpp.minimumOsxVersion: 10.8
+        cpp.minimumOsxVersion: "10.9"
     }
 
     Probe{
         id: targetDebug
-        property string name
+        property string name: parent.name+"_debug"
+        property string sourceDirectory: project.sourceDirectory
+        property string appname: parent.appname
         configure: {
             name = Helpers.parseConfig(sourceDirectory + "/config.make", "APPNAME", appname, "all") + "_debug";
             found = true;
@@ -61,9 +64,11 @@ CppApplication{
 
     Probe{
         id: targetRelease
-        property string name
+        property string name: parent.name
+        property string sourceDirectory: project.sourceDirectory;
+        property string appname: parent.name
         configure: {
-            name = Helpers.parseConfig(sourceDirectory + "/config.make", "APPNAME", appname, "all");
+            name = Helpers.parseConfig(sourceDirectory + "/config.make", "APPNAME", appname, "all") + ""; // NOTE: we must add an empty String so that the result will be converted to String
             found = true;
         }
     }
@@ -89,7 +94,7 @@ CppApplication{
         prefix: {
             var srcDir = project.of_root;
             if(FileInfo.isAbsolutePath(project.of_root) == false){
-                srcDir = FileInfo.joinPaths(project.path, srcDir);
+                srcDir = FileInfo.joinPaths(project.sourceDirectory, srcDir);
             }
             srcDir = FileInfo.joinPaths(srcDir, "libs/*/lib/", product.platform, "/");
             return srcDir;
@@ -165,6 +170,14 @@ CppApplication{
         fileTags: ["icons"]
     }
 
+    Group {
+        name: "precompiled headers"
+        condition: project.precompileOfMain === true
+        files: [
+            FileInfo.joinPaths(parent.of_root, '/openFrameworks/ofMain.h'),
+        ]
+        fileTags: ["cpp_pch_src"]
+    }
 
 
     Rule {

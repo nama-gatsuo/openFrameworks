@@ -6,6 +6,7 @@
 #pragma once
 
 #include "ofConstants.h"
+#include <glm/mat3x3.hpp>
 
 
 /// \brief A 3x3 Matrix
@@ -46,8 +47,8 @@ public:
 		*this = reinterpret_cast<const ofMatrix3x3&>(mat);
 	}
 
-	operator glm::mat3(){
-		return *reinterpret_cast<glm::mat3*>(this);
+	operator glm::mat3() const{
+		return *reinterpret_cast<const glm::mat3*>(this);
 	}
 	
 	/// \}
